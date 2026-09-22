@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="500" viewBox="0 0 600 500">
+<rect width="600" height="500" rx="28" fill="#e3f2fd"/>
+<circle cx="300" cy="205" r="125" fill="white" opacity="0.9"/>
+<text x="300" y="255" text-anchor="middle" font-size="150" font-family="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, sans-serif">🫘</text>
+<text x="300" y="390" text-anchor="middle" font-size="34" font-weight="700" fill="#18352a" font-family="Arial, sans-serif">Toor Dal</text>
+<text x="300" y="430" text-anchor="middle" font-size="20" fill="#5f7168" font-family="Arial, sans-serif">Fresh • Quicker Grocery</text>
+</svg>
