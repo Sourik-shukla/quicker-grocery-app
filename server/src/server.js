@@ -25,7 +25,9 @@ const port = process.env.PORT || 5000;
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
-    app.listen(port, () => console.log(`Quicker API running on http://localhost:${port}`));
+    app.listen(port, "0.0.0.0", () => {
+      console.log(`Quicker API running on port ${port}`);
+    });
   })
   .catch(err => {
     console.error("MongoDB connection failed:", err.message);
