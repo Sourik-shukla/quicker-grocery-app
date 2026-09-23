@@ -50,19 +50,56 @@ function Home() {
 
   useEffect(() => { load(); }, []);
 
-  const add = p => {
-    const next = [...cart];
-    const found = next.find(x => x.product === p._id);
-    if (found) found.quantity += 1;
-    else next.push({ product: p._id, name: p.name, price: p.price, quantity: 1, image: p.image });
-    setCart(next);
-    localStorage.setItem("quicker_cart", JSON.stringify(next));
-  };
+ const add = p => {
+  const next = [...cart];
+  const found = next.find(x => x.product === p._id);
 
-  const total = cart.reduce((s, x) => s + x.price * x.quantity, 0);
-  const visibleProducts = category === "All"
-    ? products
-    : products.filter(p => p.category === category);
+  if (found) {
+    found.quantity += 1;
+  } else {
+    next.push({
+      product: p._id,
+      name: p.name,
+      price: p.price,
+      quantity: 1,
+      image: p.image
+    });
+  }
+
+  setCart(next);
+  localStorage.setItem("quicker_cart", JSON.stringify(next));
+};
+
+// Increase or decrease quantity
+const updateQuantity = (productId, change) => {
+  const next = cart
+    .map(item =>
+      item.product === productId
+        ? { ...item, quantity: item.quantity + change }
+        : item
+    )
+    .filter(item => item.quantity > 0);
+
+  setCart(next);
+  localStorage.setItem("quicker_cart", JSON.stringify(next));
+};
+
+// Remove item completely
+const removeFromCart = productId => {
+  const next = cart.filter(item => item.product !== productId);
+
+  setCart(next);
+  localStorage.setItem("quicker_cart", JSON.stringify(next));
+};
+
+const total = cart.reduce(
+  (s, x) => s + x.price * x.quantity,
+  0
+);
+
+const visibleProducts = category === "All"
+  ? products
+  : products.filter(p => p.category === category);
 
   return (
     <main className="shop-page">
@@ -150,13 +187,47 @@ function Home() {
               <div className="cart-items">
                 {cart.map(x => (
                   <div className="cartrow cart-item" key={x.product}>
-                    <img src={x.image || "/products/generic-grocery.svg"} alt="" />
-                    <div className="cart-item-info">
-                      <strong>{x.name}</strong>
-                      <small>₹{x.price} × {x.quantity}</small>
-                    </div>
-                    <b>₹{x.price * x.quantity}</b>
-                  </div>
+  <img
+    src={x.image || "/products/generic-grocery.svg"}
+    alt={x.name}
+  />
+
+  <div className="cart-item-info">
+    <strong>{x.name}</strong>
+
+    <small>₹{x.price} each</small>
+
+    <div className="cart-quantity">
+      <button
+        type="button"
+        onClick={() => updateQuantity(x.product, -1)}
+      >
+        −
+      </button>
+
+      <span>{x.quantity}</span>
+
+      <button
+        type="button"
+        onClick={() => updateQuantity(x.product, 1)}
+      >
+        +
+      </button>
+    </div>
+  </div>
+
+  <div className="cart-item-actions">
+    <b>₹{x.price * x.quantity}</b>
+
+    <button
+      type="button"
+      className="remove-cart-item"
+      onClick={() => removeFromCart(x.product)}
+    >
+      🗑️ Remove
+    </button>
+  </div>
+</div>
                 ))}
               </div>
               <div className="cart-total"><strong>Total</strong><strong>₹{total}</strong></div>
